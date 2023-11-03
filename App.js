@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import {StyleSheet, Text, View, Platform} from 'react-native';
-import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/navigation/Navigation';
 import 'react-native-gesture-handler';
@@ -10,8 +10,13 @@ import StatusBar from './src/components/StatusBar';
 import {colors} from './src/constants/colors';
 import SplashScreen from 'react-native-splash-screen';
 import {isAndroid} from './src/utils/deviceInfo';
+import MyContext, {WithState} from './src/states';
+import {WebView} from 'react-native-webview';
 
 const App = () => {
+  const [generatedToken, setGeneratedToken] = useState();
+  const {isOpenHelper} = useContext(MyContext);
+
   useEffect(() => {
     if (isAndroid) {
       setTimeout(() => SplashScreen.hide(), 200);
@@ -21,22 +26,35 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaProvider>
-        <View style={{flex: 1}}>
-          <StatusBar />
+        <StatusBar />
+
+        {!isOpenHelper && (
           <SafeAreaView
             style={[styles.container, {backgroundColor: colors.statusBar}]}
             edges={['right', 'left', 'bottom']}>
-            <NavigationContainer>
-              <Navigation />
-            </NavigationContainer>
+            <View style={{flex: 1}}>
+              <NavigationContainer>
+                <Navigation />
+              </NavigationContainer>
+            </View>
           </SafeAreaView>
-        </View>
+        )}
+        {isOpenHelper && (
+          <WebView
+            style={{
+              flex: 1,
+            }}
+            source={{
+              uri: 'https://www.finfrenzy.games/',
+            }}
+          />
+        )}
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 };
 
-export default App;
+export default WithState(App);
 
 const styles = StyleSheet.create({
   container: {

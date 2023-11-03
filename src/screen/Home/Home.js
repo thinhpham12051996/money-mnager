@@ -8,12 +8,13 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import TopnavBar from '../../components/TopnavBar';
 import HistoryCom from '../../components/HistoryCom';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Orientation from 'react-native-orientation';
 import {
   incomeCategories,
   expenseCategories,
@@ -24,6 +25,7 @@ import {windowWidth} from '../../utils/deviceInfo';
 import moment from 'moment';
 import {useFocusEffect} from '@react-navigation/native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import MyContext from '../../states/index';
 
 const Home = ({navigation}) => {
   const [inSelect, setInSelect] = useState('income');
@@ -31,11 +33,15 @@ const Home = ({navigation}) => {
   const [month, setMonth] = useState(moment());
   var [incomeTotal, setIncomeTotal] = useState(0);
   var [expenseTotal, setExpenseTotal] = useState(0);
+  const {setIsOpenHelper} = useContext(MyContext);
 
+  const showHelpPage = () => {
+    setIsOpenHelper(true);
+    Orientation.lockToLandscape();
+  };
   useFocusEffect(
     React.useCallback(() => {
       getData();
-      console.log('log');
     }, [inSelect, month]),
   );
 
@@ -218,13 +224,13 @@ const Home = ({navigation}) => {
           />
         )}
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.navigate('Calculator')}>
-        <AntDesign
-          style={styles.plusIcon}
-          name={'pluscircle'}
-          size={40}
-          color={'#000'}
-        />
+      <TouchableOpacity
+        style={styles.plusIcon}
+        onPress={() => navigation.navigate('Calculator')}>
+        <AntDesign name={'pluscircle'} size={40} color={'#000'} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.helpIcon} onPress={showHelpPage}>
+        <AntDesign name={'questioncircle'} size={40} color={'#000'} />
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => navigation.navigate("cal")}>
         <AntDesign name={'pluscircle'} size={40} color={"#000"} />
@@ -253,6 +259,11 @@ const styles = StyleSheet.create({
   plusIcon: {
     position: 'absolute',
     bottom: 15,
+    right: 10,
+  },
+  helpIcon: {
+    position: 'absolute',
+    bottom: 80,
     right: 10,
   },
   rightSwiper: {

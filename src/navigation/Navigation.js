@@ -1,15 +1,12 @@
 /* eslint-disable react/no-unstable-nested-components */
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import React from 'react';
 import Home from '../screen/Home/Home';
 import Categories from '../screen/Categories/Categories';
 import Budgets from '../screen/Budgets/Budgets';
 import Information from '../screen/Information/Information';
 import Calculator from '../Calculator/Calculator';
-import Income from '../screen/Income/Income';
 import IncomeCategories from '../IncomeCategories/IncomeCategories';
-import Login from '../Login/Login';
-import SignIn from '../SignIn/SignIn';
 import CustomDrawer from '../components/CustomDrawer';
 import Analysis from '../screen/Analysis/Analysis';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,8 +16,6 @@ import {isAndroid} from '../utils/deviceInfo';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {useWindowDimensions} from 'react-native';
-import cal from '../cal';
 
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -120,7 +115,6 @@ const BottomTabBar = () => {
 };
 
 const DrawerNavigation = () => {
-  const dimensions = useWindowDimensions();
   return (
     <Drawer.Navigator
       screenOptions={{

@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import "Orientation.h"
 #import <React/RCTBundleURLProvider.h>
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -35,5 +35,7 @@
 {
   return true;
 }
-
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
+}
 @end
